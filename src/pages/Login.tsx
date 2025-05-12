@@ -1,34 +1,62 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
+// Dummy user data for authentication
+const dummyUsers = [
+  { email: "user@example.com", password: "password123" },
+  { email: "admin@devaisr.com", password: "admin123" },
+  { email: "test@test.com", password: "test123" }
+];
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
     
-    // Simulate API call
+    // Simulate API call with dummy authentication
     setTimeout(() => {
+      const user = dummyUsers.find(
+        (user) => user.email === email && user.password === password
+      );
+      
       setIsLoading(false);
-      toast({
-        title: "Login Successful",
-        description: "Welcome back to DevAIzr!",
-      });
-      // Redirect would happen here in a real app
+      
+      if (user) {
+        // Save user session (in a real app, you'd use proper auth tokens)
+        localStorage.setItem("user", JSON.stringify({ email: user.email }));
+        
+        toast({
+          title: "Login Successful",
+          description: "Welcome back to DevAIzr!",
+        });
+        
+        navigate("/");
+      } else {
+        setError("Invalid email or password. Try using one of the test accounts listed below.");
+        toast({
+          title: "Login Failed",
+          description: "Invalid email or password",
+          variant: "destructive",
+        });
+      }
     }, 1500);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background to-secondary/10">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-950">
       <div className="w-full max-w-md">
         <Card className="border-primary/10 shadow-lg">
           <CardHeader className="space-y-1">
@@ -79,6 +107,13 @@ const Login = () => {
                     required
                   />
                 </div>
+                
+                {error && (
+                  <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-md text-sm">
+                    {error}
+                  </div>
+                )}
+                
                 <Button 
                   type="submit" 
                   className="w-full"
@@ -88,6 +123,15 @@ const Login = () => {
                 </Button>
               </div>
             </form>
+            
+            {/* Test credentials section */}
+            <div className="space-y-2 border-t border-gray-200 dark:border-gray-800 pt-4 mt-4">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Test Credentials:</p>
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md text-sm text-blue-700 dark:text-blue-300">
+                <p>Email: user@example.com</p>
+                <p>Password: password123</p>
+              </div>
+            </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <div className="relative w-full">
