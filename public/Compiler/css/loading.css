@@ -1,0 +1,107 @@
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-bg, #1a1a2e);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: relative;
+    animation: rotate 1.2s linear infinite;
+}
+
+.loading-spinner::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--judge0-cyan, #00BDD2);
+    border-right-color: var(--judge0-blue, #2B3A8F);
+    border-bottom-color: var(--judge0-violet, #5F3282);
+    border-left-color: var(--judge0-pink, #ED2079);
+    animation: prixClipFix 2s linear infinite;
+}
+
+.loading-message {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-light, #f0f0f8);
+    font-size: 14px;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards 0.3s;
+}
+
+.app-name {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin-top: 30px;
+    color: var(--text-light, #f0f0f8);
+    letter-spacing: -0.5px;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards 0.5s;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes prixClipFix {
+    0% { clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0); }
+    25% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0); }
+    50% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%); }
+    75% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%); }
+    100% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0); }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Loading progress bar */
+.loading-progress {
+    width: 200px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-top: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.loading-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(45deg, var(--judge0-cyan, #00BDD2) 0%, var(--judge0-blue, #2B3A8F) 40%, var(--judge0-violet, #5F3282) 70%, var(--judge0-pink, #ED2079) 100%);
+    transition: width 0.5s ease;
+    border-radius: 4px;
+}
+
+/* Body transition during loading */
+body.loading {
+    overflow: hidden;
+}

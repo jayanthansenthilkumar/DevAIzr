@@ -1,0 +1,224 @@
+:root {
+    --judge0-blue: #2B3A8F;
+    --judge0-cyan: #00BDD2;
+    --judge0-pink: #ED2079;
+    --judge0-violet: #5F3282;
+    --dark-bg: #1a1a2e;
+    --dark-secondary: #232340;
+    --text-light: #f0f0f8;
+    --accent-color: #7aa2f7;
+    --error-color: #f7768e;
+    --success-color: #73daca;
+    --border-radius: 6px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    min-height: 100%;
+    padding: 0;
+    font-family: "JetBrains Mono", monospace;
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+}
+
+.judge0-gradient {
+    background: var(--judge0-cyan) !important;
+    background: linear-gradient(45deg, var(--judge0-cyan) 0%, var(--judge0-blue) 40%, var(--judge0-violet) 70%, var(--judge0-pink) 100%) !important;
+    transition: all 0.3s ease !important;
+}
+
+.judge0-gradient:hover {
+    box-shadow: 0 4px 15px rgba(0, 189, 210, 0.4) !important;
+    transform: translateY(-1px);
+}
+
+/* Top navigation */
+#site-navigation {
+    background-color: var(--dark-secondary) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--box-shadow);
+    padding: 0.5rem 1rem;
+    margin: 0 !important;
+}
+
+#site-navigation .item {
+    margin: 0 0.25rem;
+}
+
+#site-navigation .ui.button {
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    transition: all 0.2s ease;
+}
+
+#site-navigation .ui.labeled.icon.button {
+    padding-left: 3.1rem !important;
+}
+
+#site-navigation .ui.button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Button styling */
+#run-btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+}
+
+#run-btn i, #open-btn i, #save-btn i, #ai-menu-btn i {
+    opacity: 0.9;
+}
+
+/* AI Menu Button */
+#ai-menu-btn {
+    background: linear-gradient(45deg, #7e57c2 0%, #5e35b1 100%);
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+
+#ai-menu-btn:hover {
+    background: linear-gradient(45deg, #9575cd 0%, #7e57c2 100%);
+    box-shadow: 0 4px 15px rgba(126, 87, 194, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Dropdown styling */
+.ui.dropdown {
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--dark-secondary);
+    color: var(--text-light);
+    padding: 0.6rem 1rem;
+}
+
+input[type="text"] {
+    border-radius: var(--border-radius) !important;
+    background-color: var(--dark-secondary) !important;
+    color: var(--text-light) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 0.6rem 1rem !important;
+}
+
+/* Editor layout */
+#site-content {
+    height: calc(100vh - 96px);
+}
+
+#site-footer, .lm_tab {
+    font-family: "JetBrains Mono", monospace !important;
+    background-color: var(--dark-secondary) !important;
+    color: var(--text-light) !important;
+}
+
+#site-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* Golden layout customization */
+.lm_goldenlayout {
+    background-color: var(--dark-bg) !important;
+}
+
+.lm_content {
+    background-color: var(--dark-secondary) !important;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.lm_header {
+    background-color: var(--dark-secondary) !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    height: 32px !important;
+    line-height: 32px !important;
+}
+
+.lm_tab {
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    box-shadow: none !important;
+    margin-right: 2px !important;
+    padding: 0 10px !important;
+    transition: background-color 0.2s ease;
+    height: 32px !important;
+    line-height: 32px !important;
+}
+
+.lm_tab.lm_active {
+    background-color: var(--accent-color) !important;
+    color: #000 !important;
+    padding: 0 12px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+}
+
+.lm_tab:not(.lm_active):hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.lm_controls .lm_icon {
+    filter: invert(1);
+}
+
+/* Modal styling */
+.ui.modal {
+    background-color: var(--dark-secondary) !important;
+    color: var(--text-light) !important;
+    border-radius: var(--border-radius) !important;
+}
+
+.ui.modal .header, .ui.modal .content {
+    background-color: var(--dark-secondary) !important;
+    color: var(--text-light) !important;
+}
+
+.ui.modal .actions {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Status line styling */
+#status-line {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Monaco editor customization - these will be applied via JS */
+.monaco-editor {
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    overflow: hidden;
+}
+
+/* Animation for the run button */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 189, 210, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 189, 210, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 189, 210, 0); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+.split-container {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 96px);
+}
+
+.split-left {
+    flex: 1;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.split-right {
+    flex: 1;
+}
+
+#editor, #output {
+    width: 100%;
+    height: 100%;
+}

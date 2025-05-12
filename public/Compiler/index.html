@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://js.puter.com/v2/"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        var require = {
+            paths: {
+                "vs": "./vendor/monaco-editor-0.44.0/min/vs"
+            }
+        };
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/golden-layout/1.5.9/goldenlayout.min.js" integrity="sha256-NhJAZDfGgv4PiB+GVlSrPdh3uc75XXYSM4su8hgTchI=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/golden-layout/1.5.9/css/goldenlayout-base.css" integrity="sha256-oIDR18yKFZtfjCJfDsJYpTBv1S9QmxYopeqw2dO96xM=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/golden-layout/1.5.9/css/goldenlayout-dark-theme.css" integrity="sha256-ygw8PvSDJJUGLf6Q9KIQsYR3mOmiQNlDaxMLDOx9xL0=" crossorigin="anonymous" />
+
+    <script src="./vendor/monaco-editor-0.44.0/min/vs/loader.js"></script>
+    <script src="./vendor/monaco-editor-0.44.0/min/vs/editor/editor.main.nls.js"></script>
+    <script src="./vendor/monaco-editor-0.44.0/min/vs/editor/editor.main.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css" integrity="sha512-KXol4x3sVoO+8ZsWPFI/r5KBVB/ssCGB5tsv2nVOKwLg33wTFP3fmnXa47FdSVIshVTgsYk/1734xSk9aFIa4A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js" integrity="sha512-Xo0Jh8MsOn72LGV8kU5LsclG7SUzJsWGhXbWcYs2MAmChkQzwiW/yTQwdJ8w6UA9C6EVG18GHb/TrYpYCjyAQw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript" src="js/ide.js"></script>
+    <script type="text/javascript" src="js/ui-enhancements.js"></script>
+    <script type="text/javascript" src="js/loader.js"></script>
+    <script type="text/javascript" src="js/notifications.js"></script>
+    <script type="text/javascript" src="js/command-palette.js"></script>
+    <script type="text/javascript" src="js/ai-suggestions.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/ide.css">
+    <link type="text/css" rel="stylesheet" href="css/light-theme.css">
+    <link type="text/css" rel="stylesheet" href="css/loading.css">
+    <link type="text/css" rel="stylesheet" href="css/custom-components.css">
+    <link type="text/css" rel="stylesheet" href="css/ai-suggestions.css">
+
+    <title>DevAIzr</title>
+    <meta name="title" content="DevAIzr">
+</head>
+
+<body class="loading">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="app-name">DevAIzr</div>
+        <div class="loading-message">Initializing code environment...</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="loading-bar"></div>
+        </div>
+    </div>
+
+    <div id="site-navigation" class="ui top attached inverted borderless tiny menu">
+        <div class="item">
+            <img src="images/devaizr-logo.svg" alt="DevAIzr Logo" style="height: 32px; margin-right: 8px;">
+            <span class="logo-text" style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem;">DevAIzr</span>
+        </div>
+        <div class="item">
+            <div class="ui input">
+                <select id="select-language" class="ui dropdown">
+                    <!-- Options will be populated dynamically by JavaScript -->
+                </select>
+            </div>
+        </div>
+       
+        <div class="item">
+            <div class="ui input">
+                <input id="command-line-arguments" type="text" placeholder="Command line arguments"></input>
+            </div>
+        </div>
+        <div class="item fitted">
+            <button id="run-btn" class="ui primary labeled icon button judge0-gradient" data-inverted="" data-tooltip="Run (Ctrl+Enter)" data-position="bottom center">
+                <i class="play icon"></i>Run Code
+            </button>
+        </div>
+        <div class="item">
+            <button id="open-btn" class="ui labeled icon button" data-inverted="" data-tooltip="Open File (Ctrl+O)" data-position="bottom center">
+                <i class="file icon"></i>Open
+            </button>
+            <input type="file" id="open-file-input" style="display: none;">
+        </div>
+        <div class="item fitted">
+            <button id="save-btn" class="ui labeled icon button" data-inverted="" data-tooltip="Save File (Ctrl+S)" data-position="bottom center">
+                <i class="save icon"></i>Save
+            </button>
+        </div>
+        <div class="item fitted">
+            <button id="ai-menu-btn" class="ui labeled icon button" data-inverted="" data-tooltip="Toggle AI Suggestions (Alt+A)" data-position="bottom center">
+                <i class="lightbulb icon"></i>AI Suggestions
+            </button>
+        </div>
+    </div>
+
+    <div id="site-content"></div>
+
+    <div id="site-modal" class="ui modal">
+        <div class="header">
+            <span id="title"></span>
+        </div>
+        <div class="scrolling content"></div>
+        <div class="actions">
+            <a id="report-problem-btn" class="ui labeled icon red button" href="https://github.com/judge0/ide/issues/new?title=New+bug+report&body=Describe+the+problem." target="_blank">
+                <i class="flag icon"></i>
+                Report Problem
+            </a>
+            <div class="ui labeled icon cancel secondary button">
+                <i class="close icon"></i>
+                Close (ESC)
+            </div>
+        </div>
+    </div>
+
+    <div id="site-footer" class="ui bottom attached inverted borderless mini menu">
+        <div class="left menu">
+            <div class="item">
+                <i class="circle icon" id="connection-status" style="color: var(--success-color)"></i>
+                <span style="margin-left: 5px;">Ready</span>
+            </div>
+        </div>
+        <div class="right menu">
+            <div id="status-line" class="item"></div>
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div id="command-palette" class="command-palette">
+        <div class="command-input-container">
+            <input type="text" id="command-input" placeholder="Type a command... (Press Ctrl+P to toggle)">
+        </div>
+        <div class="command-list">
+            <!-- Command items will be added by JavaScript -->
+        </div>
+    </div>
+</body>
+</html>

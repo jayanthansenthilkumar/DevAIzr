@@ -1,0 +1,60 @@
+<div id="loading-screen" class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="app-name">DevAIzr</div>
+    <div class="loading-message">Initializing code environment...</div>
+    <div class="loading-progress">
+        <div class="loading-progress-bar" id="loading-bar"></div>
+    </div>
+</div>
+
+<script>
+    // Loading screen functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const loadingBar = document.getElementById('loading-bar');
+        const loadingScreen = document.getElementById('loading-screen');
+        
+        // Simulate loading progress
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 5;
+            loadingBar.style.width = `${progress}%`;
+            
+            if (progress >= 100) {
+                clearInterval(interval);
+                
+                // Hide loading screen
+                setTimeout(() => {
+                    loadingScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        document.body.classList.remove('loading');
+                    }, 500);
+                }, 300);
+            }
+        }, 100);
+        
+        // Set loading messages
+        const messages = [
+            "Initializing editor...",
+            "Loading language support...",
+            "Preparing code environment...",
+            "Almost ready..."
+        ];
+        
+        let messageIndex = 0;
+        const messageElement = document.querySelector('.loading-message');
+        const messageInterval = setInterval(() => {
+            messageElement.style.opacity = 0;
+            
+            setTimeout(() => {
+                messageElement.textContent = messages[messageIndex];
+                messageElement.style.opacity = 1;
+                messageIndex = (messageIndex + 1) % messages.length;
+            }, 300);
+            
+            if (progress >= 100) {
+                clearInterval(messageInterval);
+            }
+        }, 2000);
+    });
+</script>

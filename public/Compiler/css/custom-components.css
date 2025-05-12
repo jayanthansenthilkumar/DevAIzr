@@ -1,0 +1,235 @@
+/* Custom UI Components Styles */
+
+/* Command Palette */
+.command-palette {
+    position: fixed;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    max-width: 90%;
+    background-color: var(--dark-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 9999;
+    transition: top 0.3s ease;
+}
+
+.command-palette.active {
+    top: 80px;
+}
+
+.command-input-container {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#command-input {
+    width: 100%;
+    background-color: var(--dark-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    color: var(--text-light);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.command-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.command-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.command-item:hover {
+    background-color: var(--dark-bg);
+}
+
+/* AI Assistant Button */
+#ai-assistant-toggle {
+    transition: all 0.3s ease;
+}
+
+#ai-assistant-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Judge0 gradient for buttons */
+.judge0-gradient {
+    background: linear-gradient(45deg, var(--judge0-cyan) 0%, var(--judge0-blue) 40%, var(--judge0-violet) 70%, var(--judge0-pink) 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.command-item i {
+    margin-right: 10px;
+}
+
+.command-item-name {
+    flex: 1;
+}
+
+.command-item-shortcut {
+    opacity: 0.6;
+    font-size: 0.9em;
+}
+
+/* Button animations and effects */
+.ui.button {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ui.button:active, .ui.button.clicked {
+    transform: scale(0.97);
+}
+
+/* Notification system */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.notification {
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-family: 'JetBrains Mono', monospace;
+    min-width: 280px;
+    max-width: 400px;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    background-color: var(--dark-secondary);
+}
+
+.notification.success {
+    border-left: 4px solid var(--success-color);
+}
+
+.notification.error {
+    border-left: 4px solid var(--error-color);
+}
+
+.notification.info {
+    border-left: 4px solid var(--accent-color);
+}
+
+.notification.warning {
+    border-left: 4px solid #FFC107;
+}
+
+.notification.visible {
+    transform: translateX(0);
+}
+
+.notification-icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-light);
+}
+
+.notification-message {
+    color: var(--text-light);
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.notification-close {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    margin-left: 10px;
+    color: var(--text-light);
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+/* Enhance tooltips */
+.ui.tooltip {
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Status indicator in footer */
+#connection-status {
+    transition: color 0.3s ease;
+}
+
+/* Light theme overrides for custom components */
+body.light-theme .notification {
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .command-palette {
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme #command-input {
+    background-color: #f5f5fa;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .command-item:hover {
+    background-color: #f5f5fa;
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+    background: #f0f0f8;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}

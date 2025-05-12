@@ -1,0 +1,11 @@
+/* Custom styles for navigation */
+button[data-active=true] {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+/* Focus and hover states */
+button:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

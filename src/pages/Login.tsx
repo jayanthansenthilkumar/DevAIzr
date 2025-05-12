@@ -7,52 +7,31 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 
-// Dummy user data for authentication
-const dummyUsers = [
-  { email: "user@example.com", password: "password123" },
-  { email: "admin@devaisr.com", password: "admin123" },
-  { email: "test@test.com", password: "test123" }
-];
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
     
-    // Simulate API call with dummy authentication
+    // Accept any credentials and simulate login
     setTimeout(() => {
-      const user = dummyUsers.find(
-        (user) => user.email === email && user.password === password
-      );
-      
       setIsLoading(false);
       
-      if (user) {
-        // Save user session (in a real app, you'd use proper auth tokens)
-        localStorage.setItem("user", JSON.stringify({ email: user.email }));
-        
+      // Save user session with whatever credentials were entered
+      localStorage.setItem("user", JSON.stringify({ email }));
         toast({
-          title: "Login Successful",
-          description: "Welcome back to DevAIzr!",
-        });
-        
-        navigate("/");
-      } else {
-        setError("Invalid email or password. Try using one of the test accounts listed below.");
-        toast({
-          title: "Login Failed",
-          description: "Invalid email or password",
-          variant: "destructive",
-        });
-      }
-    }, 1500);
+        title: "Login Successful",
+        description: "Welcome to DevAIzr!",
+      });
+      
+      // Redirect to the Compiler page
+      window.location.href = "public/Compiler/index.html";
+    }, 1000);
   };
 
   return (
@@ -79,10 +58,9 @@ const Login = () => {
             <form onSubmit={handleLogin}>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
                   <Input 
                     id="email" 
-                    placeholder="your.email@example.com" 
+                    placeholder="devaizr@prisoltech.com" 
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -91,23 +69,16 @@ const Login = () => {
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Password</Label>
-                    <Link 
-                      to="/reset-password" 
-                      className="text-sm text-primary hover:underline"
-                    >
-                      Forgot password?
-                    </Link>
                   </div>
                   <Input 
                     id="password" 
                     type="password" 
+                    placeholder="********"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                </div>
-                
+                </div>                
                 {error && (
                   <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-md text-sm">
                     {error}
@@ -123,15 +94,14 @@ const Login = () => {
                 </Button>
               </div>
             </form>
-            
-            {/* Test credentials section */}
-            <div className="space-y-2 border-t border-gray-200 dark:border-gray-800 pt-4 mt-4">
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Test Credentials:</p>
+              {/* Credential instructions */}
+            {/* <div className="space-y-2 border-t border-gray-200 dark:border-gray-800 pt-4 mt-4">
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Login Information:</p>
               <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md text-sm text-blue-700 dark:text-blue-300">
-                <p>Email: user@example.com</p>
-                <p>Password: password123</p>
+                <p>You can use any email and password to login!</p>
+                <p>All credentials will be accepted.</p>
               </div>
-            </div>
+            </div> */}
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <div className="relative w-full">

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embeded Compiler</title>
+</head>
+<body>
+    <iframe id="judge0-ide" src="https://ide.judge0.com" width="100%" height="600px"></iframe>
+
+    <h4>Data From Judge0 IDE</h4>
+    <button onclick="getDataFromJudge0IDE()">Get Data</button>
+
+    <pre id="judge0-ide-data-viewer"></pre>
+
+    <script>
+        let iframeDataViewer = document.getElementById("judge0-ide-data-viewer");
+        let judge0IDE = document.getElementById("judge0-ide");
+
+        window.onmessage = function(e) {
+            if (!e.data) {
+                return;
+            }
+
+            iframeDataViewer.innerHTML = JSON.stringify(e.data, null, 2);
+
+            if (e.data.event === "initialised") {
+                // Make sure to only post data after the IDE is initialised
+                // When setting the data, make sure to set the action to "set".
+                //
+                // The data you send will be used to populate the IDE.
+                // You don't have to send all the data, only the data you want to set.
+                //
+                // Make sure to get your API key at https://platform.sulu.sh/apis/judge0
+                // If you don't set your API key, the default API key will be used, which has limitations and should not be used in production.
+                judge0IDE.contentWindow.postMessage({
+                    action: "set",
+                    api_key: "",
+                    source_code: "Welcome!",
+                    language_id: 43,
+                    flavor: "CE",
+                    stdin: "Hello, World!",
+                    stdout: "",
+                    compiler_options: "",
+                    command_line_arguments: "",
+                }, '*');
+            }
+        };
+
+        function getDataFromJudge0IDE() {
+            judge0IDE.contentWindow.postMessage({action: "get"}, '*');
+        }
+    </script>
+</body>

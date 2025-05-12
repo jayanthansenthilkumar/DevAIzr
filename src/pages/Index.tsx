@@ -257,6 +257,65 @@ const Index = () => {
     setOutput("");
   }, [selectedLanguage]);
 
+  // Add scroll detection to update active section as user scrolls  // Add scroll detection to update active section as user scrolls
+  useEffect(() => {
+    // Add throttling to avoid excessive function calls during scroll
+    let lastScrollTime = 0;
+    const scrollThrottle = 100; // ms between allowed function calls
+    
+    const handleScroll = () => {
+      const now = Date.now();
+      if (now - lastScrollTime < scrollThrottle) return;
+      lastScrollTime = now;
+      
+      const sections = [
+        "home",
+        "about",
+        "compiler",
+        "compiler-sample",
+        "contact"
+      ];
+      
+      // Find which section is currently visible in the viewport
+      let currentSection = null;
+      let maxVisibility = 0;
+      
+      sections.forEach(sectionId => {
+        const element = document.getElementById(sectionId);
+        if (!element) return;
+        
+        const rect = element.getBoundingClientRect();
+        // Calculate how much of the section is visible in the viewport
+        const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+        const visibilityRatio = visibleHeight > 0 ? visibleHeight / element.clientHeight : 0;
+        
+        // Special case for the first section - if its top is above viewport but still partially visible
+        if (sectionId === "home" && rect.top < 0 && rect.bottom > 0) {
+          const homeVisibility = rect.bottom / element.clientHeight;
+          if (homeVisibility > maxVisibility) {
+            maxVisibility = homeVisibility;
+            currentSection = sectionId;
+          }
+        } 
+        // For all sections, find the one with the most visibility
+        else if (visibilityRatio > maxVisibility) {
+          maxVisibility = visibilityRatio;
+          currentSection = sectionId;
+        }
+      });
+      
+      if (currentSection && currentSection !== activeSection) {
+        setActiveSection(currentSection);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    // Call once to set initial active section
+    handleScroll();
+    
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [activeSection]);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navigation Bar */}
@@ -270,50 +329,49 @@ const Index = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex">
             <NavigationMenu>
-              <NavigationMenuList className="gap-2">
-                <NavigationMenuLink 
-                  className={`${navigationMenuTriggerStyle()} ${activeSection === "home" ? "bg-primary text-primary-foreground" : ""}`} 
+              <NavigationMenuList className="gap-2">                <NavigationMenuLink 
+                  className={navigationMenuTriggerStyle()}
+                  data-active={activeSection === "home" ? "true" : undefined}
                   onClick={() => scrollToSection("home")}
+                  aria-current={activeSection === "home" ? "page" : undefined}
                 >
                   <Home className="mr-2 h-4 w-4" />
                   Home
                 </NavigationMenuLink>
 
                 <NavigationMenuLink 
-                  className={`${navigationMenuTriggerStyle()} ${activeSection === "about" ? "bg-primary text-primary-foreground" : ""}`} 
+                  className={navigationMenuTriggerStyle()}
+                  data-active={activeSection === "about" ? "true" : undefined}
                   onClick={() => scrollToSection("about")}
+                  aria-current={activeSection === "about" ? "page" : undefined}
                 >
                   <Info className="mr-2 h-4 w-4" />
                   About
-                </NavigationMenuLink>
-
-                <NavigationMenuLink 
-                  className={`${navigationMenuTriggerStyle()} ${activeSection === "compiler" ? "bg-primary text-primary-foreground" : ""}`} 
+                </NavigationMenuLink>                <NavigationMenuLink 
+                  className={navigationMenuTriggerStyle()}
+                  data-active={activeSection === "compiler" ? "true" : undefined}
                   onClick={() => scrollToSection("compiler")}
+                  aria-current={activeSection === "compiler" ? "page" : undefined}
                 >
                   <Code className="mr-2 h-4 w-4" />
                   Compiler
                 </NavigationMenuLink>
 
                 <NavigationMenuLink 
-                  className={`${navigationMenuTriggerStyle()} ${activeSection === "contributors" ? "bg-primary text-primary-foreground" : ""}`} 
-                  onClick={() => scrollToSection("contributors")}
-                >
-                  <Users className="mr-2 h-4 w-4" />
-                  Contributors
-                </NavigationMenuLink>
-
-                <NavigationMenuLink 
-                  className={`${navigationMenuTriggerStyle()} ${activeSection === "compiler-sample" ? "bg-primary text-primary-foreground" : ""}`} 
+                  className={navigationMenuTriggerStyle()}
+                  data-active={activeSection === "compiler-sample" ? "true" : undefined}
                   onClick={() => scrollToSection("compiler-sample")}
+                  aria-current={activeSection === "compiler-sample" ? "page" : undefined}
                 >
                   <FileCode className="mr-2 h-4 w-4" />
                   Compiler Sample
                 </NavigationMenuLink>
 
                 <NavigationMenuLink 
-                  className={`${navigationMenuTriggerStyle()} ${activeSection === "contact" ? "bg-primary text-primary-foreground" : ""}`} 
+                  className={navigationMenuTriggerStyle()}
+                  data-active={activeSection === "contact" ? "true" : undefined}
                   onClick={() => scrollToSection("contact")}
+                  aria-current={activeSection === "contact" ? "page" : undefined}
                 >
                   <Mail className="mr-2 h-4 w-4" />
                   Contact
@@ -346,46 +404,57 @@ const Index = () => {
 
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden px-4 py-2 bg-background border-t animate-fade-in">
-            <div className="flex flex-col space-y-2">
+          <div className="md:hidden px-4 py-2 bg-background border-t animate-fade-in">            <div className="flex flex-col space-y-2">
               <button 
-                className={`flex items-center p-2 rounded-md ${activeSection === "home" ? "bg-primary text-primary-foreground" : ""}`}
+                className="flex items-center p-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
+                data-active={activeSection === "home" ? "true" : undefined}
                 onClick={() => scrollToSection("home")}
+                aria-current={activeSection === "home" ? "page" : undefined}
               >
                 <Home className="mr-2 h-4 w-4" />
                 Home
               </button>
               <button 
-                className={`flex items-center p-2 rounded-md ${activeSection === "about" ? "bg-primary text-primary-foreground" : ""}`}
+                className="flex items-center p-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
+                data-active={activeSection === "about" ? "true" : undefined}
                 onClick={() => scrollToSection("about")}
+                aria-current={activeSection === "about" ? "page" : undefined}
               >
                 <Info className="mr-2 h-4 w-4" />
                 About
-              </button>
+              </button>              
               <button 
-                className={`flex items-center p-2 rounded-md ${activeSection === "compiler" ? "bg-primary text-primary-foreground" : ""}`}
+                className="flex items-center p-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
+                data-active={activeSection === "compiler" ? "true" : undefined}
                 onClick={() => scrollToSection("compiler")}
+                aria-current={activeSection === "compiler" ? "page" : undefined}
               >
                 <Code className="mr-2 h-4 w-4" />
                 Compiler
               </button>
               <button 
-                className={`flex items-center p-2 rounded-md ${activeSection === "contributors" ? "bg-primary text-primary-foreground" : ""}`}
+                className="flex items-center p-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
+                data-active={activeSection === "contributors" ? "true" : undefined}
                 onClick={() => scrollToSection("contributors")}
+                aria-current={activeSection === "contributors" ? "page" : undefined}
               >
                 <Users className="mr-2 h-4 w-4" />
                 Contributors
               </button>
               <button 
-                className={`flex items-center p-2 rounded-md ${activeSection === "compiler-sample" ? "bg-primary text-primary-foreground" : ""}`}
+                className="flex items-center p-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
+                data-active={activeSection === "compiler-sample" ? "true" : undefined}
                 onClick={() => scrollToSection("compiler-sample")}
+                aria-current={activeSection === "compiler-sample" ? "page" : undefined}
               >
                 <FileCode className="mr-2 h-4 w-4" />
                 Compiler Sample
               </button>
               <button 
-                className={`flex items-center p-2 rounded-md ${activeSection === "contact" ? "bg-primary text-primary-foreground" : ""}`}
+                className="flex items-center p-2 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground"
+                data-active={activeSection === "contact" ? "true" : undefined}
                 onClick={() => scrollToSection("contact")}
+                aria-current={activeSection === "contact" ? "page" : undefined}
               >
                 <Mail className="mr-2 h-4 w-4" />
                 Contact
@@ -424,10 +493,9 @@ const Index = () => {
                   Write, compile, and run code in over 50+ programming languages with intelligent assistance and real-time collaboration
                 </p>
               </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "200ms" }}>
+                <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: "200ms" }}>
                 <Button size="lg" onClick={handleDemoClick} className="bg-gradient-blue">
-                  Try Demo
+                  Try Our Compiler
                 </Button>
                 <Link to="/register">
                   <Button size="lg" variant="outline">
@@ -590,11 +658,15 @@ print("Ready to code smarter!")`}</code>
                 </Card>
               ))}
             </div>
-            
-            <div className="mt-12 text-center">
-              <Link to="/features">
-                <Button>Explore All Features</Button>
-              </Link>
+              <div className="mt-12 text-center">
+              <div className="flex justify-center gap-4">
+                <Button onClick={() => window.location.href = "public/Compiler/index.html"} className="bg-primary hover:bg-primary/90">
+                  Try Our Compiler
+                </Button>
+                <Link to="/features">
+                  <Button variant="outline">Explore All Features</Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -624,40 +696,6 @@ print("Ready to code smarter!")`}</code>
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Contributors Section */}
-        <section id="contributors" className="py-16">
-          <div className="container">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-3">Our Contributors</h2>
-              <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
-              <p className="text-slate-600 max-w-3xl mx-auto mb-8">
-                Meet the talented individuals who have contributed to making DevAIzr the powerful platform it is today.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <Card key={index} className="overflow-hidden border-blue-100 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
-                  <div className="aspect-square bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center">
-                    <Users className="h-16 w-16 text-blue-400" />
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-blue-800">Contributor {index + 1}</h3>
-                    <p className="text-sm text-slate-600">Lead Developer</p>
-                    <p className="text-xs text-slate-500 mt-2">Specialized in AI algorithms and code optimization</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            <div className="mt-8 text-center">
-              <Link to="/contributors">
-                <Button variant="outline">View All Contributors</Button>
-              </Link>
             </div>
           </div>
         </section>
@@ -730,20 +768,17 @@ print("Ready to code smarter!")`}</code>
                     </div>
                   </div>
                 </div>
-                
-                <div className="p-4 border-t border-blue-100 bg-blue-50 flex justify-between items-center">
-                  <span className="text-sm text-slate-600">
+                  <div className="p-4 border-t border-blue-100 bg-blue-50 flex justify-between items-center">                  <span className="text-sm text-slate-600">
                     {isRunning ? "Compiling and running..." : "Ready to run"}
                   </span>
-                  <Link to="/compiler">
+                  <Link to="/login">
                     <Button>Try Full Compiler</Button>
                   </Link>
                 </div>
               </div>
               
               <div className="mt-8 bg-blue-100 p-4 rounded-lg border border-blue-200">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Supported Languages</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Supported Languages</h3>                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-white rounded p-2 text-center border border-blue-200">
                     <span className="text-slate-700">Python</span>
                   </div>
@@ -894,9 +929,9 @@ print("Ready to code smarter!")`}</code>
               </div>
             </div>
             
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-white">Product</h3>
+            <div>              <h3 className="text-lg font-semibold mb-4 text-white">Product</h3>
               <ul className="space-y-2 text-blue-200">
+                <li><a href="public/Compiler/index.html" className="hover:text-white">Compiler</a></li>
                 <li><a href="#" className="hover:text-white">Features</a></li>
                 <li><a href="#" className="hover:text-white">Pricing</a></li>
                 <li><a href="#" className="hover:text-white">Documentation</a></li>

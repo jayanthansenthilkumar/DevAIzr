@@ -1,0 +1,90 @@
+/* Light theme variation */
+body.light-theme {
+    --dark-bg: #f5f5fa;
+    --dark-secondary: #ffffff;
+    --text-light: #333344;
+    --judge0-blue: #3F51B5;
+    --judge0-cyan: #00BCD4;
+    --judge0-violet: #673AB7;
+    --judge0-pink: #E91E63;
+    --accent-color: #3F51B5;
+    --error-color: #E91E63;
+    --success-color: #4CAF50;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme #site-navigation,
+body.light-theme #site-footer {
+    background-color: var(--dark-secondary) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-theme .ui.inverted.menu {
+    background-color: var(--dark-secondary);
+}
+
+body.light-theme .ui.inverted.menu .item,
+body.light-theme .ui.inverted.menu .item > i.icon {
+    color: var(--text-light) !important;
+}
+
+body.light-theme input[type="text"] {
+    background-color: #f5f5fa !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: var(--text-light) !important;
+}
+
+body.light-theme .ui.dropdown {
+    background-color: #f5f5fa;
+    border-color: rgba(0, 0, 0, 0.1);
+    color: var(--text-light);
+}
+
+body.light-theme .lm_goldenlayout {
+    background-color: var(--dark-bg) !important;
+}
+
+body.light-theme .lm_content {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .lm_header {
+    background-color: #f0f0f8 !important;
+    height: 32px !important;
+    line-height: 32px !important;
+}
+
+body.light-theme .lm_tab {
+    background-color: #e8e8f0 !important;
+    color: #555 !important;
+}
+
+body.light-theme .lm_tab.lm_active {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+}
+
+body.light-theme .lm_tab:not(.lm_active):hover {
+    background-color: #d8d8e0 !important;
+}
+
+body.light-theme .lm_controls .lm_icon {
+    filter: none;
+}
+
+body.light-theme .ui.modal {
+    background-color: white !important;
+    color: var(--text-light) !important;
+}
+
+body.light-theme .ui.modal .header,
+body.light-theme .ui.modal .content {
+    background-color: white !important;
+    color: var(--text-light) !important;
+}
+
+body.light-theme .ui.modal .actions {
+    background-color: #f5f5fa !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
